@@ -1,0 +1,192 @@
+:root{
+  --bg:#0f172a;      
+  --panel:#111827;  
+  --card:#1f2937;    
+  --text:#e5e7eb;    
+  --muted:#9ca3af;   
+  --primary:#22c55e; 
+  --danger:#ef4444;  
+  --warning:#f59e0b; 
+  --accent:#38bdf8;  
+}
+
+*{box-sizing:border-box}
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+  margin:0;
+}
+a{color:var(--accent)}
+
+.app{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--panel);
+  border:1px solid #222;
+  padding:16px;
+  border-radius:12px;
+}
+header h1{margin:0;font-size:20px;letter-spacing:0.4px}
+header .clock{font-variant-numeric:tabular-nums;color:var(--muted)}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid #222;
+  padding:16px;
+  border-radius:12px;
+}
+.card h2{margin:0 0 12px 0;font-size:16px}
+
+label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+input,select,textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #333;
+  background:#0b1220;
+  color:var(--text);
+}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0b1220;
+  color:var(--text);
+  cursor:pointer;
+  user-select:none;
+}
+.btn.primary{background:var(--primary);border-color:#1f9c48;color:#072b12;font-weight:600}
+.btn.danger{background:var(--danger);border-color:#b91c1c;color:#2b0b0b;font-weight:600}
+.btn.accent{background:var(--accent);border-color:#0ea5e9;color:#052532;font-weight:600}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+
+.muted{color:var(--muted);font-size:13px}
+.flex{display:flex;gap:8px;flex-wrap:wrap}
+.list{display:flex;flex-direction:column;gap:8px}
+
+.ticket{
+  display:grid;
+  grid-template-columns:1.5fr 1fr auto;
+  gap:8px;
+  align-items:center;
+  padding:10px;
+  border:1px dashed #333;
+  border-radius:10px;
+  background:#0b1220;
+}
+
+.pill{padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid #333}
+.pill.ok{background:#062715;color:#79e08a;border-color:#164b29}
+.pill.warn{background:#2a2106;color:#f7d87a;border-color:#5c4b0b}
+.pill.bad{background:#2a0609;color:#f7a1a8;border-color:#5c0b13}
+
+.price-line{display:flex;justify-content:space-between;margin:4px 0}
+.divider{height:1px;background:#222;margin:10px 0}
+.right{text-align:right}
+.nowrap{white-space:nowrap}
+
+.qr{
+  width:200px;height:200px;
+  border:1px dashed #333;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0b1220;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+.small{font-size:12px;color:var(--muted)}
+
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th,.table td{border-bottom:1px solid #222;padding:8px;text-align:left;font-size:14px}
+.table th{color:#cbd5e1}
+
+.actions{display:flex;gap:6px;justify-content:flex-end}
+.kbd{border:1px solid #333;background:#0b1220;border-radius:6px;padding:2px 6px}
+
+
+@media print{
+  body{background:white;color:black}
+  header,.grid:nth-of-type(1),.no-print{display:none !important}
+  .printable{
+    display:block !important;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    width:72%;margin:0 auto;padding:12px;border:1px dashed #555;border-radius:8px
+  }
+  .printable h3{margin:0 0 8px 0}
+  .printable .price-line{font-variant-numeric:tabular-nums}
+}
+ 
+.printable{display:none}
+
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr; 
+  }
+
+  header h1 { font-size: 18px; }
+  .card h2 { font-size: 15px; }
+
+.card {
+  max-width: 95%;
+}
+
+  .ticket {
+    grid-template-columns: 1fr; 
+    gap: 4px;
+  }
+
+  .row {
+    grid-template-columns: 1fr; 
+  }
+
+  .btn {
+    width: 100%; 
+    justify-content: center;
+  }
+
+  #btTest { pointer-events: auto; }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    font-size: 16px; 
+  }
+
+  .app {
+    padding: 12px; 
+  }
+}

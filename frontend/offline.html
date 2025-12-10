@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EstacionaFácil - Offline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0f172a;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #22c55e;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 6px 0;
+      opacity: 0.9;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #22c55e;
+      border: none;
+      border-radius: 6px;
+      color: #0f172a;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #1faa55;
+    }
+  </style>
+</head>
+<body>
+  <h1>Você está offline</h1>
+  <p>Não foi possível conectar ao EstacionaFácil.</p>
+  <p>Verifique sua conexão com a internet e tente novamente.</p>
+
+  <button onclick="location.reload()">Tentar novamente</button>
+</body>
+</html>
