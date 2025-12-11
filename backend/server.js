@@ -1,11 +1,14 @@
 import express from "express";
+import cors from "cors";
 import fs from "fs";
 import PDFDocument from "pdfkit";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
+app.use(cors());
 app.use(express.json());
+
 
 // Necessário para usar __dirname em ES Modules
 const __filename = fileURLToPath(import.meta.url);
