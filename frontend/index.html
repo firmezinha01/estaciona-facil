@@ -6,6 +6,8 @@
   <title>EstacionaFácil — Sistema de Ticket</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="manifest" href="manifest.json">
+
+  <!-- OCR -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 </head>
 
@@ -19,88 +21,80 @@
     <div id="message" class="muted"></div>
 
     <div class="grid">
+      <!-- NOVA ENTRADA -->
       <section class="card">
         <h2>Nova entrada</h2>
+
         <div class="row">
           <div>
             <label>Placa</label>
             <input id="plate" placeholder="ABC1D23" maxlength="8"/>
-            <input type="file" accept="image/*" capture="environment" id="cameraInput"/>
+
+            <!-- Câmera oculta (OCR automático) -->
+            <input type="file" accept="image/*" capture="environment" id="cameraInput" style="display:none"/>
           </div>
+
           <div>
             <label>Vaga</label>
             <input id="slot" placeholder="A12" maxlength="6"/>
           </div>
         </div>
+
         <div class="row">
           <div>
             <label>Observações</label>
             <input id="note" placeholder="Ex.: lavamos o carro"/>
           </div>
+
           <div>
             <label>Entrada</label>
             <input id="startTime" type="datetime-local"/>
           </div>
         </div>
+
         <div class="flex" style="margin-top:10px">
           <button class="btn primary" id="createTicket">Gerar ticket</button>
           <span class="muted">Atalho: <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span></span>
         </div>
+
         <div class="muted" style="margin-top:8px">
           Dica: se “Entrada” ficar vazio, será usada a hora atual.
         </div>
       </section>
 
+      <!-- VALOR A COBRAR -->
       <section class="card">
-        <h2>Configurações de tarifa</h2>
+        <h2>Valor a cobrar</h2>
+
         <div class="row">
           <div>
-            <label>Tarifa por hora (R$)</label>
-            <input id="rateHour" type="number" step="0.01" value="12.00"/>
-          </div>
-          <div>
-            <label>Fracionamento mínimo (min)</label>
-            <input id="minFraction" type="number" step="1" value="15"/>
+            <label>Valor final (R$)</label>
+            <input id="rateHour" type="number" step="0.01" placeholder="Digite o valor final">
           </div>
         </div>
-        <div class="row">
-          <div>
-            <label>Cobrança por fração (min)</label>
-            <input id="fraction" type="number" step="1" value="15"/>
-          </div>
-          <div>
-            <label>Taxa ticket perdido (R$)</label>
-            <input id="lostFee" type="number" step="0.01" value="30.00"/>
-          </div>
-        </div>
-        <div class="row">
-          <div>
-            <label>Desconto (R$)</label>
-            <input id="discount" type="number" step="0.01" value="0.00"/>
-          </div>
-          <div>
-            <label>Máximo diário (R$)</label>
-            <input id="dailyMax" type="number" step="0.01" value="60.00"/>
-          </div>
-        </div>
+
         <div class="muted" style="margin-top:8px">
-          O cálculo é por fração. A fração mínima garante um valor mínimo; o máximo diário limita a cobrança.
+          Digite o valor final que será cobrado no encerramento.
         </div>
       </section>
     </div>
 
+    <!-- TICKETS ATIVOS -->
     <section class="card">
       <h2>Tickets ativos</h2>
       <div id="activeList" class="list"></div>
     </section>
 
+    <!-- ENCERRAR E COBRAR -->
     <section class="card">
       <h2>Encerrar e cobrar</h2>
+
       <div class="row">
         <div>
           <label>Ticket</label>
           <select id="finishTicket"></select>
         </div>
+
         <div>
           <label>Saída</label>
           <input id="endTime" type="datetime-local"/>
@@ -119,13 +113,6 @@
             <option value="cash">Dinheiro</option>
           </select>
         </div>
-        <div>
-          <label>Ticket perdido?</label>
-          <select id="lostTicket">
-            <option value="no">Não</option>
-            <option value="yes">Sim</option>
-          </select>
-        </div>
       </div>
 
       <div id="calcArea" style="margin-top:10px"></div>
@@ -142,8 +129,10 @@
       </div>
     </section>
 
+    <!-- HISTÓRICO -->
     <section class="card">
       <h2>Histórico</h2>
+
       <table class="table" id="historyTable">
         <thead>
         <tr>
@@ -161,24 +150,29 @@
       </table>
     </section>
 
+    <!-- COMPROVANTE -->
     <div id="printable" class="printable">
       <h3>Comprovante de estacionamento</h3>
+
       <div class="price-line"><span>Estabelecimento:</span><span id="p_company">EstacionaFácil</span></div>
       <div class="price-line"><span>Endereço:</span><span id="p_addr">Guarulhos - SP</span></div>
+
       <div class="divider"></div>
+
       <div class="price-line"><span>Ticket:</span><span id="p_id"></span></div>
       <div class="price-line"><span>Placa:</span><span id="p_plate"></span></div>
       <div class="price-line"><span>Vaga:</span><span id="p_slot"></span></div>
       <div class="price-line"><span>Entrada:</span><span id="p_start"></span></div>
       <div class="price-line"><span>Saída:</span><span id="p_end"></span></div>
       <div class="price-line"><span>Tempo:</span><span id="p_duration"></span></div>
+
       <div class="divider"></div>
-      <div class="price-line"><span>Subtotal:</span><span id="p_subtotal"></span></div>
-      <div class="price-line"><span>Desconto:</span><span id="p_discount"></span></div>
-      <div class="price-line"><span>Taxa extra:</span><span id="p_extra"></span></div>
+
       <div class="price-line"><span>Total:</span><span id="p_total" class="nowrap"></span></div>
       <div class="price-line"><span>Pagamento:</span><span id="p_method"></span></div>
+
       <div class="divider"></div>
+
       <div class="small">Obrigado pela preferência!</div>
     </div>
 

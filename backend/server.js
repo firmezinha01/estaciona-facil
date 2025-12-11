@@ -1,14 +1,11 @@
 import express from "express";
 import cors from "cors";
-import fs from "fs";
-import PDFDocument from "pdfkit";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 // Necessário para usar __dirname em ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -80,45 +77,42 @@ function escposQrCode(data) {
 // ================= GERADOR ESC/POS DO TICKET =================
 
 function gerarEscPosTicket(ticket) {
-  // ticket: { id, plate, slot, start, end, chargedMinutes, subtotal, discount, extra, total, method, pixPayload? }
-
   let escpos = "";
   escpos += escposInit();
 
-  // Cabeçalho
+  // LOGO + TÍTULO (tudo centralizado)
   escpos += escposAlignCenter();
-  escpos += escposDoubleSizeOn();
-  escpos += "= EstacionaFácil =\n";
-  escpos += escposDoubleSizeOff();
+  escpos += escposBoldOn();
+  escpos += "=====================\n";
+  escpos += "   ESTACIONA FÁCIL\n";
+  escpos += "=====================\n";
+  escpos += escposBoldOff();
   escpos += escposNewLines(1);
 
+  escpos += escposAlignCenter();
   escpos += escposBoldOn();
   escpos += "COMPROVANTE DE ESTACIONAMENTO\n";
   escpos += escposBoldOff();
-  escpos += "------------------------------\n";
+  escpos += "--------------------------------------\n";
 
-  // Dados principais
-  escpos += escposAlignLeft();
+  // Dados principais (centralizados)
+  escpos += escposAlignCenter();
   escpos += `Ticket: ${ticket.id}\n`;
   escpos += `Placa: ${ticket.plate}\n`;
   escpos += `Vaga: ${ticket.slot}\n`;
   escpos += `Entrada: ${ticket.start}\n`;
   escpos += `Saída:   ${ticket.end}\n`;
-  escpos += `Tempo:   ${ticket.chargedMinutes} min\n`;
-  escpos += "------------------------------\n";
+  escpos += `Tempo:   ${ticket.durationMin} min\n`;
+  escpos += "--------------------------------------\n";
 
-  // Valores
-  escpos += `Subtotal: R$ ${ticket.subtotal.toFixed(2)}\n`;
-  escpos += `Desconto: R$ ${ticket.discount.toFixed(2)}\n`;
-  escpos += `Extras:   R$ ${ticket.extra.toFixed(2)}\n`;
-  escpos += "------------------------------\n";
+  // Total e forma de pagamento
   escpos += escposBoldOn();
-  escpos += `TOTAL:    R$ ${ticket.total.toFixed(2)}\n`;
+  escpos += `TOTAL: R$ ${ticket.total.toFixed(2)}\n`;
   escpos += escposBoldOff();
   escpos += `Pagamento: ${ticket.method}\n`;
-  escpos += "------------------------------\n";
+  escpos += "--------------------------------------\n";
 
-  // Se tiver PIX, imprime QR Code
+  // PIX QR Code, se houver
   if (ticket.method === "PIX" && ticket.pixPayload) {
     escpos += escposAlignCenter();
     escpos += "PAGAMENTO VIA PIX\n";
@@ -128,8 +122,8 @@ function gerarEscPosTicket(ticket) {
     escpos += escposNewLines(1);
   }
 
+  // Rodapé
   escpos += escposAlignCenter();
-  escpos += escposNewLines(1);
   escpos += "Obrigado pela preferência!\n";
   escpos += "Guarde este comprovante.\n";
   escpos += escposNewLines(3);
@@ -158,7 +152,6 @@ app.post("/gerar-pix", (req, res) => {
   const paymentId = "PIX-" + Date.now();
   const valor = req.body.total || "0.00";
 
-  // Aqui você pode depois trocar por um payload Pix oficial (EMV)
   const chave = "chavepix123";
   const payload = `${chave}|valor=${valor}|pid=${paymentId}`;
 
