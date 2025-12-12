@@ -75,60 +75,61 @@ function escposQrCode(data) {
 }
 
 // ================= GERADOR ESC/POS DO TICKET =================
-
 function gerarEscPosTicket(ticket) {
   let escpos = "";
   escpos += escposInit();
 
-  // LOGO + TÍTULO (tudo centralizado)
+  // Reduz espaçamento vertical geral
+  escpos += "\x1B\x33\x08"; // espaçamento compacto
+
+  // Cabeçalho
   escpos += escposAlignCenter();
   escpos += escposBoldOn();
   escpos += "=====================\n";
   escpos += "   ESTACIONA FACIL\n";
   escpos += "=====================\n";
   escpos += escposBoldOff();
-  escpos += escposNewLines(1);
 
+  // Título
   escpos += escposAlignCenter();
   escpos += escposBoldOn();
   escpos += "COMPROVANTE DE ESTACIONAMENTO\n";
   escpos += escposBoldOff();
   escpos += "--------------------------------------\n";
 
-  // Dados principais (centralizados)
+  // Dados principais
   escpos += escposAlignCenter();
   escpos += `Ticket: ${ticket.id}\n`;
   escpos += `Placa: ${ticket.plate}\n`;
   escpos += `Vaga: ${ticket.slot}\n`;
   escpos += `Entrada: ${ticket.start}\n`;
   escpos += `Saida:   ${ticket.end}\n`;
-  escpos += `Tempo:   ${ticket.durationMin} min\n`;
   escpos += "--------------------------------------\n";
 
-  // Total e forma de pagamento
+  // Total e pagamento
   escpos += escposBoldOn();
   escpos += `TOTAL: R$ ${ticket.total.toFixed(2)}\n`;
   escpos += escposBoldOff();
   escpos += `Pagamento: ${ticket.method}\n`;
   escpos += "--------------------------------------\n";
 
-  // PIX QR Code, se houver
+  // PIX QR Code
   if (ticket.method === "PIX" && ticket.pixPayload) {
     escpos += escposAlignCenter();
     escpos += "PAGAMENTO VIA PIX\n";
     escpos += "Escaneie o QR Code abaixo:\n";
-    escpos += escposNewLines(1);
     escpos += escposQrCode(ticket.pixPayload);
-    escpos += escposNewLines(1);
   }
 
   // Rodapé
   escpos += escposAlignCenter();
   escpos += "Obrigado pela preferencia!\n";
   escpos += "Guarde este comprovante.\n";
-  escpos += escposNewLines(3);
-  escpos += escposCut();
 
+  // Espaço final reduzido
+  escpos += "\n\n";
+
+  escpos += escposCut();
   return escpos;
 }
 
