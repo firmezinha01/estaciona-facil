@@ -84,7 +84,7 @@ function gerarEscPosTicket(ticket) {
   escpos += escposAlignCenter();
   escpos += escposBoldOn();
   escpos += "=====================\n";
-  escpos += "   ESTACIONA FÁCIL\n";
+  escpos += "   ESTACIONA FACIL\n";
   escpos += "=====================\n";
   escpos += escposBoldOff();
   escpos += escposNewLines(1);
@@ -101,7 +101,7 @@ function gerarEscPosTicket(ticket) {
   escpos += `Placa: ${ticket.plate}\n`;
   escpos += `Vaga: ${ticket.slot}\n`;
   escpos += `Entrada: ${ticket.start}\n`;
-  escpos += `Saída:   ${ticket.end}\n`;
+  escpos += `Saida:   ${ticket.end}\n`;
   escpos += `Tempo:   ${ticket.durationMin} min\n`;
   escpos += "--------------------------------------\n";
 
@@ -124,7 +124,7 @@ function gerarEscPosTicket(ticket) {
 
   // Rodapé
   escpos += escposAlignCenter();
-  escpos += "Obrigado pela preferência!\n";
+  escpos += "Obrigado pela preferencia!\n";
   escpos += "Guarde este comprovante.\n";
   escpos += escposNewLines(3);
   escpos += escposCut();
